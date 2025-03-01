@@ -12,8 +12,6 @@ import {
   useWeatherQuery,
 } from "@/hooks/use-weather";
 import { AlertTriangle, MapPin, RefreshCcw } from "lucide-react";
-import Link from "next/link";
-import { useReducer } from "react";
 
 export default function WeatherDashboard() {
   const { coordinates, error, getLocation, loading } = useGeolocation();

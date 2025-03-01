@@ -1,3 +1,4 @@
+"use client";
 import { weatherAPI } from "@/api/weather";
 import { useQuery } from "@tanstack/react-query";
 

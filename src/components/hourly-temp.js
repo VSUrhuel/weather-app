@@ -26,7 +26,7 @@ export default function HourlyTemp({ data }) {
   return (
     <Card className="flex-1">
       <CardHeader>
-        <CardTitle>Today's Temperature</CardTitle>
+        <CardTitle>Today&apos;s Temperature</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[200px] w-full">
