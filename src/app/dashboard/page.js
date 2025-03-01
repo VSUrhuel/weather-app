@@ -1,0 +1,122 @@
+import Forecast from "@/components/forecast";
+import HourlyTemp from "@/components/hourly-temp";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import WeatherInfo from "@/components/weather";
+import WeatherComponent from "@/components/weather-component";
+import WeatherSkeleton from "@/components/weather-sekeleton";
+import useGeolocation from "@/hooks/use-geolocation";
+import {
+  useForecastQuery,
+  useReverseGeocodeQuery,
+  useWeatherQuery,
+} from "@/hooks/use-weather";
+import { AlertTriangle, MapPin, RefreshCcw } from "lucide-react";
+import Link from "next/link";
+import { useReducer } from "react";
+
+export default function WeatherDashboard() {
+  const { coordinates, error, getLocation, loading } = useGeolocation();
+
+  const handleRefresh = () => {
+    getLocation();
+    if (coordinates) {
+      locationQuery.refetch();
+      weatherQuery.refetch();
+      forecastQuery.refetch();
+    }
+  };
+
+  const locationQuery = useReverseGeocodeQuery(coordinates);
+  const weatherQuery = useWeatherQuery(coordinates);
+  const forecastQuery = useForecastQuery(coordinates);
+  if (loading) {
+    return <WeatherSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertTitle>Location Error</AlertTitle>
+        <AlertDescription className="flex flex-col gap-4">
+          <p>{error}</p>
+          <Button onClick={getLocation} variant="outline" className="w-fit">
+            <MapPin className="h-4 w-4" />
+            Enable Location
+          </Button>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (!coordinates) {
+    return (
+      <Alert variant="destructive">
+        <AlertTitle>Location Required</AlertTitle>
+        <AlertDescription className="flex flex-col gap-4">
+          <p>Please enable location to see your local weather</p>
+          <Button onClick={getLocation} variant="outline" className="w-fit">
+            <MapPin className="h-4 w-4" />
+            Enable Location
+          </Button>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  const locationName = locationQuery.data?.[0];
+  if (weatherQuery.error || forecastQuery.error || locationQuery.error) {
+    return (
+      <Alert variant="destructive">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertTitle>Weather Error</AlertTitle>
+        <AlertDescription className="flex flex-col gap-4">
+          <p>Failed to fetch weather data</p>
+          <Button onClick={handleRefresh} variant="outline" className="w-fit">
+            <RefreshCcw className="h-4 w-4" />
+            Retry
+          </Button>
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (!weatherQuery.data || !forecastQuery.data) {
+    return <WeatherSkeleton />;
+  }
+
+  return (
+    <div className="space-y-4 px-2 py-0 md:px-4 lg:px-12">
+      <div className="flex justify-between items-center">
+        <h1 className="text-xl font-bold tracking-tight">My Location</h1>
+        <Button
+          variant={"outline"}
+          size={"icon"}
+          onClick={handleRefresh}
+          disabled={weatherQuery.isFetching || forecastQuery.isFetching}
+        >
+          <RefreshCcw
+            className={`h-4 w-4 ${
+              weatherQuery.isFetching ? "animate-spin" : ""
+            }`}
+          ></RefreshCcw>
+        </Button>
+      </div>
+
+      <div className="grid gap-4">
+        <div className="flex flex-col lg:flex-row gap-4  md:flex-row ">
+          <WeatherComponent
+            data={weatherQuery.data}
+            locationName={locationName}
+          ></WeatherComponent>
+          <HourlyTemp data={forecastQuery.data}></HourlyTemp>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 items-start">
+          <WeatherInfo data={weatherQuery.data}></WeatherInfo>
+          <Forecast data={forecastQuery.data}></Forecast>
+        </div>
+      </div>
+    </div>
+  );
+}
