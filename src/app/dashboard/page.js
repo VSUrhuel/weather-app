@@ -72,9 +72,16 @@ export default function WeatherDashboard() {
       </Alert>
     );
   }
-
+  console.log(locationQuery);
   const locationName = locationQuery.data?.[0];
-  if (weatherQuery.error || forecastQuery.error || locationQuery.error) {
+  console.log(locationName);
+  if (
+    weatherQuery.error ||
+    forecastQuery.error ||
+    locationQuery.error ||
+    locationQuery.isLoading ||
+    locationName === undefined
+  ) {
     return (
       <Alert variant="destructive">
         <AlertTriangle className="h-4 w-4" />
