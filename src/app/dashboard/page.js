@@ -1,4 +1,6 @@
+"use client";
 import Forecast from "@/components/forecast";
+import React, { useState, useEffect } from "react";
 import HourlyTemp from "@/components/hourly-temp";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -15,6 +17,11 @@ import { AlertTriangle, MapPin, RefreshCcw } from "lucide-react";
 
 export default function WeatherDashboard() {
   const { coordinates, error, getLocation, loading } = useGeolocation();
+  const [isClient, setIsClient] = useState(false); // Add a state variable
+
+  useEffect(() => {
+    setIsClient(true); // Set isClient to true after the component mounts
+  }, []);
 
   const handleRefresh = () => {
     getLocation();
@@ -28,6 +35,9 @@ export default function WeatherDashboard() {
   const locationQuery = useReverseGeocodeQuery(coordinates);
   const weatherQuery = useWeatherQuery(coordinates);
   const forecastQuery = useForecastQuery(coordinates);
+  if (!isClient) {
+    return <div>Loading...</div>; // Or a placeholder for server-side rendering
+  }
   if (loading) {
     return <WeatherSkeleton />;
   }

@@ -76,11 +76,13 @@ export default function WeatherComponent({ data, locationName }) {
 
             <div className="flex flex-col items-center justify-center">
               <div className="relative w-full flex items-center max-w-[200px] aspect-square justify-center">
-                <img
+                <Image
                   src={`https://openweathermap.org/img/wn/${currentWeather.icon}@4x.png`}
                   alt={currentWeather.description}
+                  width={160} // Add a specific width
+                  height={160} // Add a specific height
                   className="w-full h-full object-contain"
-                ></img>
+                />
                 <div className="absolute bottom-0 text-center">
                   <p className="text-sm font-medium capitalize">
                     {currentWeather.description}
