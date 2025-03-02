@@ -1,9 +1,10 @@
 "use client";
-
-import CustomHome from "@/components/custom-home";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import CustomHome from "@/components/custom-home";
 import WeatherDashboard from "./dashboard/page";
+import City from "./city/page";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,11 +19,19 @@ const queryClient = new QueryClient({
 
 export default function Home() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <CustomHome defaultTheme="light">
-        <WeatherDashboard />
-      </CustomHome>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        {/* Custom Home Component Wrapper */}
+        <CustomHome defaultTheme="light">
+          <Routes>
+            {/* Define routes inside Routes */}
+            <Route path="/" element={<WeatherDashboard />} />
+            <Route path="/city/:name" element={<City />} />{" "}
+            {/* Dynamic route for City page */}
+          </Routes>
+        </CustomHome>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </BrowserRouter>
   );
 }

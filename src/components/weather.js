@@ -64,7 +64,7 @@ export default function WeatherInfo({ data }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Weather Other Details</CardTitle>
+        <CardTitle>Weather Details</CardTitle>
         <CardDescription>
           This includes information related to sunrise, sunset, wind direction,
           and pressure.

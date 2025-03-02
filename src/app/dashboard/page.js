@@ -18,7 +18,8 @@ import { AlertTriangle, MapPin, RefreshCcw } from "lucide-react";
 export default function WeatherDashboard() {
   const { coordinates, error, getLocation, loading } = useGeolocation();
   const [isClient, setIsClient] = useState(false); // Add a state variable
-
+  console.log("here");
+  console.log(coordinates);
   useEffect(() => {
     setIsClient(true); // Set isClient to true after the component mounts
   }, []);
@@ -120,7 +121,7 @@ export default function WeatherDashboard() {
       </div>
 
       <div className="grid gap-4">
-        <div className="flex flex-col lg:flex-row gap-4  md:flex-row ">
+        <div className="flex flex-col lg:flex-row gap-4  ">
           <WeatherComponent
             data={weatherQuery.data}
             locationName={locationName}
