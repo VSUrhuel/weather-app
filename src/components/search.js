@@ -29,7 +29,6 @@ export default function Search() {
   };
 
   const handleSelect = (value) => {
-    console.log(value);
     const [name, lat, lon, country] = value.split("|");
 
     router.push(`/city/${name}?lat=${lat}&lon=${lon}&country=${country}`);

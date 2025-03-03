@@ -60,7 +60,6 @@ export default function City() {
   };
 
   const locationName = locationQuery.data?.[0];
-  console.log(locationName);
 
   if (
     weatherQuery.error ||

@@ -20,7 +20,6 @@ import { format } from "date-fns";
 
 export default function WeatherInfo({ data }) {
   const { wind, main, sys } = data;
-  console.log(sys);
 
   const convTime = (time) => {
     return format(new Date(time * 1000), "h:mm a");

@@ -12,10 +12,8 @@ import {
 import { ArrowDown, ArrowUp, Droplets, Gauge } from "lucide-react";
 
 export default function Forecast({ data }) {
-  console.log(data);
   const dailyForecast = data.list.reduce((acc, forecast) => {
     if (!forecast || !forecast.main || !forecast.weather || !forecast.wind) {
-      console.log(forecast);
       return acc;
     }
 
@@ -42,11 +40,7 @@ export default function Forecast({ data }) {
 
     return acc;
   }, {});
-  // Get only 7 days
-  console.log(dailyForecast);
   const forecast = Object.values(dailyForecast).slice(0, 7);
-
-  console.log(forecast);
 
   const formatTemp = (temp) => {
     return `${Math.round(temp)}°C`;
@@ -55,7 +49,7 @@ export default function Forecast({ data }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>7-Day Forecast</CardTitle>
+        <CardTitle>5-Day Forecast</CardTitle>
         <CardDescription>
           This forecast is powered by OpenWeather API.
         </CardDescription>
