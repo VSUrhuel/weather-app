@@ -1,4 +1,7 @@
-import Home from "@/app/page"; // Adjust the path to your main Home component
+"use client";
+import React from "react";
+
+import Home from "../page";
 
 export default function CatchAllRoute() {
   return <Home />;
