@@ -26,14 +26,14 @@ export default function HourlyTemp({ data }) {
   return (
     <Card className="flex-1">
       <CardHeader>
-        <CardTitle>Today's Temperature</CardTitle>
+        <CardTitle>Today&apos;s Temperature</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[200px] w-full">
           <ResponsiveContainer
             width={"100%"}
             height={"100%"}
-            margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+            margin={{ top: 5, right: 5, bottom: 5, left: 0 }}
           >
             <LineChart data={lineChartData}>
               <Line

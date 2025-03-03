@@ -1,5 +1,4 @@
 import React from "react";
-import { ModdleToggle } from "./mode-toggle";
 import Header from "./header";
 
 const CustomHome = ({ children }) => {

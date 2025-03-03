@@ -1,4 +1,6 @@
+"use client";
 import Forecast from "@/components/forecast";
+import React, { useState, useEffect } from "react";
 import HourlyTemp from "@/components/hourly-temp";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -12,42 +14,44 @@ import {
   useWeatherQuery,
 } from "@/hooks/use-weather";
 import { AlertTriangle, MapPin, RefreshCcw } from "lucide-react";
-import Link from "next/link";
-import { useReducer } from "react";
+import Map from "@/components/Map";
+import CustomHome from "@/components/custom-home";
 
 export default function WeatherDashboard() {
   const { coordinates, error, getLocation, loading } = useGeolocation();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleRefresh = () => {
     getLocation();
-    if (coordinates) {
-      locationQuery.refetch();
-      weatherQuery.refetch();
-      forecastQuery.refetch();
-    }
   };
 
-  const locationQuery = useReverseGeocodeQuery(coordinates);
-  const weatherQuery = useWeatherQuery(coordinates);
-  const forecastQuery = useForecastQuery(coordinates);
+  // ✅ Always call hooks, but control execution with `enabled`
+  const locationQuery = useReverseGeocodeQuery(coordinates, {
+    enabled: !!coordinates,
+  });
+
+  const weatherQuery = useWeatherQuery(coordinates, {
+    enabled: !!coordinates,
+  });
+
+  const forecastQuery = useForecastQuery(coordinates, {
+    enabled: !!coordinates,
+  });
+
+  if (!isClient) {
+    return <WeatherSkeleton />;
+  }
+
   if (loading) {
     return <WeatherSkeleton />;
   }
 
   if (error) {
-    return (
-      <Alert variant="destructive">
-        <AlertTriangle className="h-4 w-4" />
-        <AlertTitle>Location Error</AlertTitle>
-        <AlertDescription className="flex flex-col gap-4">
-          <p>{error}</p>
-          <Button onClick={getLocation} variant="outline" className="w-fit">
-            <MapPin className="h-4 w-4" />
-            Enable Location
-          </Button>
-        </AlertDescription>
-      </Alert>
-    );
+    return <WeatherSkeleton />;
   }
 
   if (!coordinates) {
@@ -66,20 +70,15 @@ export default function WeatherDashboard() {
   }
 
   const locationName = locationQuery.data?.[0];
-  if (weatherQuery.error || forecastQuery.error || locationQuery.error) {
-    return (
-      <Alert variant="destructive">
-        <AlertTriangle className="h-4 w-4" />
-        <AlertTitle>Weather Error</AlertTitle>
-        <AlertDescription className="flex flex-col gap-4">
-          <p>Failed to fetch weather data</p>
-          <Button onClick={handleRefresh} variant="outline" className="w-fit">
-            <RefreshCcw className="h-4 w-4" />
-            Retry
-          </Button>
-        </AlertDescription>
-      </Alert>
-    );
+
+  if (
+    weatherQuery.error ||
+    forecastQuery.error ||
+    locationQuery.error ||
+    locationQuery.isLoading ||
+    locationName === undefined
+  ) {
+    return <WeatherSkeleton />;
   }
 
   if (!weatherQuery.data || !forecastQuery.data) {
@@ -105,16 +104,21 @@ export default function WeatherDashboard() {
       </div>
 
       <div className="grid gap-4">
-        <div className="flex flex-col lg:flex-row gap-4  md:flex-row ">
+        <div className="flex flex-col lg:flex-row gap-4">
           <WeatherComponent
             data={weatherQuery.data}
             locationName={locationName}
-          ></WeatherComponent>
-          <HourlyTemp data={forecastQuery.data}></HourlyTemp>
+          />
+          <HourlyTemp data={forecastQuery.data} />
         </div>
         <div className="grid gap-6 md:grid-cols-2 items-start">
-          <WeatherInfo data={weatherQuery.data}></WeatherInfo>
-          <Forecast data={forecastQuery.data}></Forecast>
+          <div className="grid gap-4">
+            <WeatherInfo data={weatherQuery.data} className="" />
+
+            <Map coordinates={coordinates} className="h-full w-full" />
+          </div>
+
+          <Forecast data={forecastQuery.data} />
         </div>
       </div>
     </div>
