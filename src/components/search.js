@@ -15,6 +15,7 @@ import { Button } from "./ui/button";
 import { Loader2, SearchIcon } from "lucide-react";
 import { useLocationQuery } from "@/hooks/use-weather";
 import { useRouter } from "next/navigation"; // ✅ Use Next.js router
+import City from "@/app/city/[name]/page";
 
 export default function Search() {
   const [open, setOpen] = React.useState(false);
@@ -31,9 +32,9 @@ export default function Search() {
     console.log(value);
     const [name, lat, lon, country] = value.split("|");
 
-    // ✅ Next.js-compatible navigation
     router.push(`/city/${name}?lat=${lat}&lon=${lon}&country=${country}`);
-    setOpen(false);
+
+    setOpen(false); // Ensure setOpen is declared properly in your state
   };
 
   return (

@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import CustomHome from "@/components/custom-home";
 import WeatherDashboard from "./dashboard/page";
-import City from "./city/page";
+import City from "./city/[name]/page";
 import { useSearchParams } from "next/navigation";
 import NotFound from "./not-found";
 
