@@ -27,7 +27,7 @@ export default function Forecast({ data }) {
         temp_max: forecast.main.temp_max,
         weather: forecast.weather[0],
         date: forecast.dt,
-        humidity: forecast.main.humidity, // ✅ Fixed typo
+        humidity: forecast.main.humidity,
         wind_speed: forecast.wind.speed,
       };
     } else {
@@ -42,11 +42,15 @@ export default function Forecast({ data }) {
 
     return acc;
   }, {});
-
   // Get only 7 days
+  console.log(dailyForecast);
   const forecast = Object.values(dailyForecast).slice(0, 7);
 
   console.log(forecast);
+
+  const formatTemp = (temp) => {
+    return `${Math.round(temp)}°C`;
+  };
 
   return (
     <Card>
@@ -63,13 +67,25 @@ export default function Forecast({ data }) {
               key={day.date}
               className="grid gap-2 grid-cols-1 justify-center lg:grid-cols-3 border p-4 rounded-lg lg:space-between"
             >
-              <div className="justify-center ">
-                <p className="font-medium text-2xl">
+              <div className="justify-center items-center h-full">
+                <p className="font-medium text-2xl w-full h-10 mt-2">
                   {format(new Date(day.date * 1000), "EEEE")}
+                  <span className="font-normal text-xl text-muted-foreground truncate">
+                    , {format(new Date(day.date * 1000), "MMM d")}
+                  </span>
                 </p>
-                <p className="font-normal text-muted-foreground">
-                  {format(new Date(day.date * 1000), "MMM d")}
-                </p>
+
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <span className="flex items-center gap-1 text-blue-500 w-fit">
+                    <ArrowDown className="h-4 w-4 text-blue-500" />
+                    {formatTemp(day.temp_min)}
+                  </span>
+
+                  <span className="flex items-center gap-1 text-red-500 w-fit">
+                    <ArrowUp className="h-4 w-4 text-red-500" />
+                    {formatTemp(day.temp_max)}
+                  </span>
+                </div>
               </div>
 
               <div className=" flex items-start justify-start lg:justify-center gap-4 h-20 w-full p-0">

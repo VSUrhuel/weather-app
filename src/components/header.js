@@ -16,11 +16,11 @@ const Header = () => {
     <header className="sticky top-0 z-50 shadow-sm w-full bg-background/95 border-b border-muted supports-[backdrop-filter]:bg-backdrop/60">
       <div className="container mx-auto flex justify-between gap-2 px-4 py-4">
         <Link href="/">
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div className="flex items-center justify-center mt-2 gap-2 cursor-pointer">
             <span>
               <MapPin className="h-6 w-6 text-blue-400" />
             </span>
-            <span className="text-xl font-bold tracking-tight">
+            <span className="text-sm font-bold md:text-lg tracking-tight">
               My Location
             </span>
           </div>

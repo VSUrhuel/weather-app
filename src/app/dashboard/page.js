@@ -14,6 +14,8 @@ import {
   useWeatherQuery,
 } from "@/hooks/use-weather";
 import { AlertTriangle, MapPin, RefreshCcw } from "lucide-react";
+import Map from "@/components/Map";
+import CustomHome from "@/components/custom-home";
 
 export default function WeatherDashboard() {
   const { coordinates, error, getLocation, loading } = useGeolocation();
@@ -76,19 +78,7 @@ export default function WeatherDashboard() {
     locationQuery.isLoading ||
     locationName === undefined
   ) {
-    return (
-      <Alert variant="destructive">
-        <AlertTriangle className="h-4 w-4" />
-        <AlertTitle>Weather Error</AlertTitle>
-        <AlertDescription className="flex flex-col gap-4">
-          <p>Failed to fetch weather data</p>
-          <Button onClick={handleRefresh} variant="outline" className="w-fit">
-            <RefreshCcw className="h-4 w-4" />
-            Retry
-          </Button>
-        </AlertDescription>
-      </Alert>
-    );
+    return <WeatherSkeleton />;
   }
 
   if (!weatherQuery.data || !forecastQuery.data) {
@@ -122,7 +112,12 @@ export default function WeatherDashboard() {
           <HourlyTemp data={forecastQuery.data} />
         </div>
         <div className="grid gap-6 md:grid-cols-2 items-start">
-          <WeatherInfo data={weatherQuery.data} />
+          <div className="grid gap-4">
+            <WeatherInfo data={weatherQuery.data} className="" />
+
+            <Map coordinates={coordinates} className="h-full w-full" />
+          </div>
+
           <Forecast data={forecastQuery.data} />
         </div>
       </div>

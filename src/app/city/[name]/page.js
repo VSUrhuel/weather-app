@@ -11,11 +11,10 @@ import {
   useReverseGeocodeQuery,
   useWeatherQuery,
 } from "@/hooks/use-weather";
-import Header from "@/components/header";
 import CustomHome from "@/components/custom-home";
+import Map from "@/components/Map";
 
 export default function City() {
-  const { name } = useParams(); // Dynamic city name from URL
   const searchParams = useSearchParams(); // To get lat, lon, country from query params
 
   // Fetch query parameters
@@ -104,8 +103,13 @@ export default function City() {
               <HourlyTemp data={forecastQuery.data}></HourlyTemp>
             </div>
             <div className="grid gap-6 md:grid-cols-2 items-start">
-              <WeatherInfo data={weatherQuery.data}></WeatherInfo>
-              <Forecast data={forecastQuery.data}></Forecast>
+              <div className="grid gap-4">
+                <WeatherInfo data={weatherQuery.data} className="" />
+
+                <Map coordinates={coordinates} className="h-full w-full" />
+              </div>
+
+              <Forecast data={forecastQuery.data} />
             </div>
           </div>
         </div>
