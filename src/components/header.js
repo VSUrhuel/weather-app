@@ -18,9 +18,9 @@ const Header = () => {
         <Link href="/">
           <div className="flex items-center justify-center mt-2 gap-2 cursor-pointer">
             <span>
-              <MapPin className="h-6 w-6 text-blue-400" />
+              <MapPin className="md:h-6 md:w-6 text-blue-400 h-8 w-8 justify-center" />
             </span>
-            <span className="text-sm font-bold md:text-lg tracking-tight">
+            <span className="text-sm font-bold md:text-lg tracking-tight hidden sm:inline">
               My Location
             </span>
           </div>

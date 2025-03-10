@@ -61,10 +61,10 @@ export default function Forecast({ data }) {
               key={day.date}
               className="grid gap-2 grid-cols-1 justify-center lg:grid-cols-3 border p-4 rounded-lg lg:space-between"
             >
-              <div className="justify-center items-center h-full">
-                <p className="font-medium text-2xl w-full h-10 mt-2">
+              <div className="justify-center items-center h-full overflow-ellipsis truncate">
+                <p className="font-medium text-xl w-full h-10 mt-2">
                   {format(new Date(day.date * 1000), "EEEE")}
-                  <span className="font-normal text-xl text-muted-foreground truncate">
+                  <span className="font-normal text-lg text-muted-foreground">
                     , {format(new Date(day.date * 1000), "MMM d")}
                   </span>
                 </p>
