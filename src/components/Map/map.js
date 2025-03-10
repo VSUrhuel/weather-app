@@ -34,6 +34,7 @@ export default function MapView({ latitude, longitude, locationName }) {
       <CardContent>
         {typeof window !== "undefined" && (
           <MapContainer
+            className="rounded-lg"
             center={[latitude, longitude]}
             zoom={13}
             style={{ height: "400px", width: "100%", zIndex: 0 }}
